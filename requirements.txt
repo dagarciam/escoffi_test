@@ -1,0 +1,2 @@
+pyspark==2.4.3
+spark-avro_2.11=2.4.3
