@@ -1,11 +1,11 @@
-# Examen Diagnostico Python to Big Data
+# Diagnostico Pyspark
 
 ## Instrucciones
 
-1. Realizar un fork de este repositorio a tu cuenta de github
-2. Crear una rama que por nombre lleve tus iniciales a partir de la rama solution
-3. Realizar los ejercicios solicitados abajo
-4. Realizar un Pull Request a la rama solution desde la rama en que haz realizado los ejercicios
+1. Realizar un fork de este repositorio a tu cuenta de github.
+2. Crear una rama que por nombre lleve tus iniciales a partir de la rama master.
+3. Realizar los ejercicios solicitados abajo.
+4. Enviar por correo electronico tus comentarios respecto a la solución y el link a tu repositorio.
 
 ## ¿Qué evaluaremos?
 
@@ -18,27 +18,37 @@
 * Modularice sú código lo suficiente de tal forma que cada método haga una sola cosa.
 * Hemos soñado con poder leer las rutas de entrada y salida desde un archivo de configuración, sería increible tener
   uno!
+* Documente cada método que se implemente para tener contexto claro de su uso.
 
 ## Ejercicio
+1. El cliente ha solicitado realizar el cruce la tabla sunedu_people_education y la tabla risk_parameter, para ello nos
+indica que la llaves son: `education_level_desc` y `parameter_value_desc`. Para cada registro en la tabla sunedu debemos
+agregar la columna `parameter_id` con el nombre `education_level_type`. Un ejemplo de la salida deseada es el siguiente:
 
-1. La tabla de salida debe contener las siguientes columnas:
-   `short_name, long_name, age, height_cm, weight_kg, nationality, club_name, overall, potential, team_position`
-2. Agregar una columna `player_cat` que responderá a la siguiente regla (rank over Window particionada por `nationality`
-   y ordenada por `overall`):
-    * **A** si el jugador es de los mejores 10 jugadores de su país.
-    * **B** si el jugador es de los mejores 20 jugadores de su país.
-    * **C** si el jugador es de los mejores 50 jugadores de su país.
-    * **D** para el resto de jugadores.
+| education_level_desc | education_level_type |
+| -------------------- | -------------------- |
+|MAESTRO EN CIENCIAS: MEDICINA|MASTER|
+|MAESTRO EN CONTABILIDAD CON MENCIÓN EN AUDITORIA|MASTER|
+|MEDICO CIRUJANO|LICENCIADO|
+|MEDICO CIRUJANO REVALIDA - UNIVERSIDAD MAYOR, REAL Y PONTIFICIA DE SAN FRANCISCO XAVIER DE CHUQUISACA TIPO: REVALIDA|LICENCIADO|
+|TITULO DE ESPECIALISTA EN GESTION ESCOLAR CON LIDERAZGO PEDAGOGICO|ESPECIALIDAD|
+|INGENIERO MECANICO ELECTRICISTA|LICENCIADO|
+|INGENIERO METALURGISTA|LICENCIADO|
+|INGENIERO METALURGICO Y SIDERURGICO|LICENCIADO|
 
-   ***tip** para resolver este ejercicio, mire el método de ejemplo example_window_function incluido en el código.*
-3. Agregaremos una columna `potential_vs_overall` con la siguiente regla:
-    * Columna `potential` dividida por la columna `overall`
-4. Filtraremos de acuerdo a las columnas `player_cat` y `potential_vs_overall` con las siguientes condiciones:
-    * Si `player_cat` esta en los siguientes valores: **A**, **B**
-    * Si `player_cat` es **C** y `potential_vs_overall` es superior a **1.15**
-    * Si `player_cat` es **D** y `potential_vs_overall` es superior a **1.25**
-5. Por favor escriba la tabla resultante de los pasos anteriores particionada por la columna `nationality`, la salida
-   debe estar escrita en formato **parquet** y debe usarse el método `coalese(1)`
-   para obtener solo un archivo por partición.
+## Prueba necesaria
+
+* De acuerdo a la regla anterior se espera la siguiente tabla de cifras de control:
+   
+````python
+df.\
+  groupBy("education_level_type").\
+  agg(count("*").alias("count"))
+````
+
+| education_level_type | count |
+| -------------------- | ----- |
+|||
+
 
 ¡Buena suerte!
