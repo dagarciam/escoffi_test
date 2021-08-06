@@ -43,4 +43,20 @@ agregar la columna `parameter_id` con el nombre `education_level_type`.
 
 Nuestro chico ha intentado realizar un join para obtener el cruce pero se ha encontrado con un escenario complicado, sólo cruza el valor `SIN INFORMACION`.
 
+### Validación
+
+El DataFrame resultante al ser agrupado por `educatuion_level_type` y realizar un conteo debería entregar una matriz como la siguiente:
+
+| education_level_type | count|
+|----------------------|------|
+|BACHILLER             |   885|
+|null                  |     1|
+|MASTER                |    21|
+|SIN INFO              | 51871|
+|ESPECIALIDAD          |    31|
+|LICENCIADO            |   256|
+|DOCTORADO             |     2|
+
+De tal forma que sólo hay un registro que no tiene correspondencia.
+
 ¡Buena suerte!
